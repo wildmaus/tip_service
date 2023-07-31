@@ -1,0 +1,21 @@
+.user-info {
+    width: 30vw;
+    float: right;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.user-info span {
+    width: 9vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-info button {
+    white-space: pre;
+}
+
+.user-info__login {
+    float: right;
+}

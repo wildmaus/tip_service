@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+<script>
+    function web3Login() {
+        try {
+            window.ethereum.enable().then(function () {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                provider.getNetwork().then(function (result) {
+                    provider.listAccounts().then(function (result) {
+                        signer = provider.getSigner();
+                        signer.signMessage(
+                            "dde842455a4dabe53db07030a4ba7b405aee8b423b1031c862377cffcb66dcb2cdd3365fd89b33e7f5bf9bcea1378309e40b4dce93dbd0a2cb267676ab29edaa"
+                        ).then((signature) => { console.log(signature) });
+                    })
+                })
+            })
+        } catch {
+            alert('Please install MetaMask for your browser.')
+        }
+    }
+</script>
+</head>
+<body>
+<button type="button" onclick="web3Login()">
+    Log in with Metamask
+</button>
+</body>
+</html>

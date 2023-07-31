@@ -1,0 +1,52 @@
+version: '3.8'
+
+x-backend:
+  &backend
+  build: .
+  working_dir: /app
+  command: [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
+  depends_on:
+    db:
+      condition: service_healthy
+    init-django-migrate:
+      condition: service_completed_successfully
+  volumes:
+    - ./:/app
+
+services:
+  db:
+    restart: always
+    image: postgres:latest
+    env_file: .env
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB:-postgres}"
+      POSTGRES_USER: "${POSTGRES_USER:-postgres}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-postgres}"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+
+  init-django-migrate:
+    <<: *backend
+    working_dir: /app
+    command: [ "sh", "-c", "python manage.py migrate" ]
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  app:
+    <<: *backend
+    ports:
+      - 8000:8000

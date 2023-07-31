@@ -1,0 +1,26 @@
+{
+  "name": "railgun-token-sender",
+  "version": "1.0.0",
+  "description": "part of the system to generate railgun proofs",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "wildmaus",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "dependencies": {
+    "@railgun-community/quickstart": "4.4.4",
+    "bn.js": "^5.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "ethers": "5.7.2",
+    "express": "^4.18.2",
+    "level": "^8.0.0",
+    "snarkjs": "^0.6.11"
+  }
+}
